@@ -1,4 +1,4 @@
-package sample;
+package ba.unsa.etf.rs.project;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;

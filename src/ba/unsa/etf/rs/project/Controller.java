@@ -1,8 +1,6 @@
-package sample;
+package ba.unsa.etf.rs.project;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +45,7 @@ public class Controller {
         colAppointmentDate.setCellValueFactory(new PropertyValueFactory("appointmentDate"));
         colAppointmentTime.setCellValueFactory(new PropertyValueFactory("appointmentTime"));
         colAppointmentPatient.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPatient().toString()));
+        tableAppointments.getSelectionModel().selectFirst();
 
         listPatients.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if(oldValue != null) {
@@ -110,6 +109,7 @@ public class Controller {
     }
 
     public void deletePatientAction(ActionEvent actionEvent) {
+        if(listPatients.getSelectionModel().isEmpty()) return;
         dao.deletePatient(listPatients.getSelectionModel().getSelectedItem());
         patientsList.removeAll(listPatients.getSelectionModel().getSelectedItem());
         listPatients.refresh();
@@ -128,6 +128,7 @@ public class Controller {
     }
 
     public void deleteAppointmentAction(ActionEvent actionEvent) {
+        if(tableAppointments.getSelectionModel().isEmpty()) return;
         dao.deleteAppointment(tableAppointments.getSelectionModel().getSelectedItem());
         appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
         tableAppointments.refresh();

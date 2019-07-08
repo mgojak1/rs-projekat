@@ -11,13 +11,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ba.unsa.etf.rs.project.Controller">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -27,20 +29,41 @@
                      <top>
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#addAppointmentAction" text="Add">
+                              <Button mnemonicParsing="false" onAction="#addAppointmentAction">
                                  <HBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets />
                                  </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#editAppointmentAction" text="Edit">
+                              <Button mnemonicParsing="false" onAction="#editAppointmentAction">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#deleteAppointmentAction" text="Delete">
+                              <Button mnemonicParsing="false" onAction="#deleteAppointmentAction">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cross.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </Button>
                            </children>
                            <BorderPane.margin>
@@ -52,7 +75,7 @@
                         </HBox>
                      </top>
                      <center>
-                        <TableView fx:id="tableAppointments" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="tableAppointments" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
                             <TableColumn fx:id="colAppointmentNumber" prefWidth="50.0" text="#" />
                             <TableColumn fx:id="colAppointmentPatient" prefWidth="200.0" text="Patient" />
@@ -147,15 +170,29 @@
                               </HBox>
                                 <HBox alignment="CENTER" prefHeight="30.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#addPatientAction" prefWidth="75.0" text="Add">
+                                        <Button mnemonicParsing="false" onAction="#addPatientAction">
                                             <HBox.margin>
                                                 <Insets left="10.0" />
                                             </HBox.margin>
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/plus.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#deletePatientAction" prefWidth="75.0" text="Delete">
+                                        <Button mnemonicParsing="false" onAction="#deletePatientAction">
                                             <HBox.margin>
                                                 <Insets left="10.0" />
                                             </HBox.margin>
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/cross.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                         </Button>
                                     </children>
                                     <padding>

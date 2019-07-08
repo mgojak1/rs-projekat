@@ -1,4 +1,4 @@
-package sample;
+package ba.unsa.etf.rs.project;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PatientDAOBase {
+public class PatientDAOBase implements PatientDAO {
     private Connection connection;
     private PreparedStatement getPatientsStatement;
     private PreparedStatement getPatientStatement;
@@ -24,6 +24,7 @@ public class PatientDAOBase {
         if (instance == null) instance = new PatientDAOBase();
         return instance;
     }
+
 
     private PatientDAOBase(){
         try {
@@ -55,11 +56,13 @@ public class PatientDAOBase {
         }
     }
 
+
     private Patient getPatientFromResultSet(ResultSet rs) throws SQLException {
         Patient patient = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
         ,rs.getString(6), rs.getDouble(8), rs.getDouble(9), rs.getDate(7).toLocalDate());
         return patient;
     }
+
 
     public ArrayList<Patient> getPatients(){
         ArrayList<Patient> result = new ArrayList();
@@ -74,6 +77,7 @@ public class PatientDAOBase {
         }
         return result;
     }
+
 
     public void updatePatient(Patient patient) {
         try {
@@ -92,6 +96,7 @@ public class PatientDAOBase {
             e.printStackTrace();
         }
     }
+
 
     public void deletePatient(Patient patient) {
         try {
@@ -136,6 +141,7 @@ public class PatientDAOBase {
         }
     }
 
+
     private void regenerateDatabase() {
         Scanner input = null;
         try {
@@ -159,6 +165,7 @@ public class PatientDAOBase {
             e.printStackTrace();
         }
     }
+
 
     public int getNextPatientID(){
         ResultSet rs = null;
@@ -188,6 +195,7 @@ public class PatientDAOBase {
 
     }
 
+
     public ArrayList<Appointment> getAppointments() {
         ArrayList<Appointment> result = new ArrayList();
         try {
@@ -207,6 +215,7 @@ public class PatientDAOBase {
     public Appointment getAppointmentFromResulstSet(ResultSet rs, Patient patient) throws SQLException {
         return new Appointment(rs.getInt(1), rs.getTimestamp(2), patient);
     }
+
 
     public void deleteAppointment(Appointment appointment) {
         try {

@@ -1,9 +1,8 @@
-package sample;
+package ba.unsa.etf.rs.project;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Appointment {
     int id;
@@ -14,7 +13,7 @@ public class Appointment {
     public Appointment(int id, Timestamp appointmentDate, Patient patient) {
         this.id = id;
         this.appointmentDate = appointmentDate.toLocalDateTime().toLocalDate();
-        this.appointmentTime = Time.valueOf(appointmentDate.toLocalDateTime().toLocalTime().minusHours(2));
+        this.appointmentTime = Time.valueOf(appointmentDate.toLocalDateTime().toLocalTime().minusHours(2)); //Time offset by 2h??
         this.patient = patient;
     }
 

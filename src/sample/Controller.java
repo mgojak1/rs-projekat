@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -7,15 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.converter.NumberStringConverter;
 
 import java.time.LocalDate;
 
 public class Controller {
-    public TableView tableAppointments;
+    public TableView<Appointment> tableAppointments;
     public TableColumn colAppointmentNumber;
-    public TableColumn colAppointmentPatient;
+    public TableColumn<Appointment, String> colAppointmentPatient;
     public TableColumn colAppointmentDate;
+    public TableColumn colAppointmentTime;
     public ListView<Patient> listPatients;
     public TextField fieldPatientName;
     public TextField fieldPatientSurname;
@@ -27,15 +30,24 @@ public class Controller {
     public TextArea areaDiagnosis;
     private PatientDAOBase dao;
     private ObservableList<Patient> patientsList;
+    private ObservableList<Appointment> appointmentsList;
 
     public Controller() {
         dao = PatientDAOBase.getInstance();
         patientsList = FXCollections.observableArrayList(dao.getPatients());
+        appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
     }
 
     @FXML
     public void initialize() {
         listPatients.setItems(patientsList);
+
+        tableAppointments.setItems(appointmentsList);
+        colAppointmentNumber.setCellValueFactory(new PropertyValueFactory("id"));
+        colAppointmentDate.setCellValueFactory(new PropertyValueFactory("appointmentDate"));
+        colAppointmentTime.setCellValueFactory(new PropertyValueFactory("appointmentTime"));
+        colAppointmentPatient.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPatient().toString()));
+
         listPatients.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if(oldValue != null) {
                 fieldPatientName.textProperty().unbindBidirectional(oldValue.nameProperty());
@@ -70,8 +82,25 @@ public class Controller {
 
         listPatients.getSelectionModel().selectFirst();
 
-        fieldPatientName.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        fieldPatientSurname.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
+        fieldPatientSurname.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            listPatients.getSelectionModel().getSelectedItem().setSurname(newValue);
+            dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
+            appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
+            tableAppointments.setItems(appointmentsList);
+            tableAppointments.refresh();
+            listPatients.setItems(patientsList);
+            listPatients.refresh();
+        });
+        fieldPatientName.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            listPatients.getSelectionModel().getSelectedItem().setName(newValue);
+            dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
+            appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
+            tableAppointments.setItems(appointmentsList);
+            tableAppointments.refresh();
+            listPatients.setItems(patientsList);
+            listPatients.refresh();
+        });
+
         fieldDateOfBirth.valueProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
         fieldMass.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
         fieldHeight.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
@@ -91,7 +120,17 @@ public class Controller {
         listPatients.refresh();
         listPatients.getSelectionModel().selectLast();
         dao.addPatient(listPatients.getSelectionModel().getSelectedItem());
-//        listPatients.getSelectionModel().selectLast();
+    }
+    public void addAppointmentAction(ActionEvent actionEvent) {
+    }
+
+    public void editAppointmentAction(ActionEvent actionEvent) {
+    }
+
+    public void deleteAppointmentAction(ActionEvent actionEvent) {
+        dao.deleteAppointment(tableAppointments.getSelectionModel().getSelectedItem());
+        appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
+        tableAppointments.refresh();
     }
 
 }

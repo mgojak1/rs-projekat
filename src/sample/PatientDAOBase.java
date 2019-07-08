@@ -9,10 +9,15 @@ import java.util.Scanner;
 public class PatientDAOBase {
     private Connection connection;
     private PreparedStatement getPatientsStatement;
+    private PreparedStatement getPatientStatement;
     private PreparedStatement updatePatientStatement;
     private PreparedStatement deletePatientStatement;
     private PreparedStatement getNextPatientIDStatement;
     private PreparedStatement addPatientStatement;
+    private PreparedStatement getAppointmentsStatement;
+    private PreparedStatement getNextAppointmentIDStatement;
+    private PreparedStatement addAppointmentStatement;
+    private PreparedStatement deleteAppointmentStatement;
     private static PatientDAOBase instance = null;
 
     public static PatientDAOBase getInstance() {
@@ -37,9 +42,14 @@ public class PatientDAOBase {
             updatePatientStatement = connection.prepareStatement("UPDATE patients SET name=?, surname=?,phone_number=?," +
                     "living_place=?, diagnosis=?, date_of_birth=?, mass=?, height=? WHERE  id=?");
 
-            deletePatientStatement = connection.prepareStatement("DELETE from patients WHERE id=?");
+            deletePatientStatement = connection.prepareStatement("DELETE FROM patients WHERE id=?");
             getNextPatientIDStatement = connection.prepareStatement("SELECT MAX(id)+1 FROM patients");
             addPatientStatement = connection.prepareStatement("INSERT INTO patients VALUES (?,?,?,?,?,?,?,?,?)");
+            getPatientStatement = connection.prepareStatement("SELECT * FROM patients WHERE id=?");
+            getAppointmentsStatement = connection.prepareStatement("SELECT * FROM appointments");
+            getNextAppointmentIDStatement = connection.prepareStatement("SELECT MAX(id)+1 FROM appointments");
+            addAppointmentStatement = connection.prepareStatement("INSERT INTO appointments VALUES (?,?,?)");
+            deleteAppointmentStatement = connection.prepareStatement("DELETE FROM appointments WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -162,6 +172,49 @@ public class PatientDAOBase {
             e.printStackTrace();
         }
         return id;
+    }
+
+
+    private Patient getPatient(int id) {
+        try {
+            getPatientStatement.setInt(1, id);
+            ResultSet rs = getPatientStatement.executeQuery();
+            if (!rs.next()) return null;
+            return getPatientFromResultSet(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public ArrayList<Appointment> getAppointments() {
+        ArrayList<Appointment> result = new ArrayList();
+        try {
+            ResultSet rs = getAppointmentsStatement.executeQuery();
+            while (rs.next()) {
+                Patient patient = getPatient(rs.getInt(3));
+                Appointment appointment = getAppointmentFromResulstSet(rs, patient);
+                result.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    public Appointment getAppointmentFromResulstSet(ResultSet rs, Patient patient) throws SQLException {
+        return new Appointment(rs.getInt(1), rs.getTimestamp(2), patient);
+    }
+
+    public void deleteAppointment(Appointment appointment) {
+        try {
+            deleteAppointmentStatement.setInt(1, appointment.getId());
+            deleteAppointmentStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

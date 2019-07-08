@@ -27,23 +27,17 @@
                      <top>
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Search:">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField />
-                              <Button mnemonicParsing="false" text="Search">
+                              <Button mnemonicParsing="false" onAction="#addAppointmentAction" text="Add">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Add">
+                              <Button mnemonicParsing="false" onAction="#editAppointmentAction" text="Edit">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Delete">
+                              <Button mnemonicParsing="false" onAction="#deleteAppointmentAction" text="Delete">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
@@ -58,12 +52,16 @@
                         </HBox>
                      </top>
                      <center>
-                        <TableView fx:id="tableAppointments" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="tableAppointments" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
                             <TableColumn fx:id="colAppointmentNumber" prefWidth="50.0" text="#" />
                             <TableColumn fx:id="colAppointmentPatient" prefWidth="200.0" text="Patient" />
                               <TableColumn fx:id="colAppointmentDate" prefWidth="200.0" text="Date" />
+                              <TableColumn fx:id="colAppointmentTime" prefWidth="75.0" text="Time" />
                           </columns>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" />
+                           </BorderPane.margin>
                         </TableView>
                      </center>
                   </BorderPane>

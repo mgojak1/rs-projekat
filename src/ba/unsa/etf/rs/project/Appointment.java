@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class Appointment {
-    int id;
-    LocalDate appointmentDate;
-    Time appointmentTime;
-    Patient patient;
+    private int id;
+    private LocalDate appointmentDate;
+    private Time appointmentTime;
+    private Patient patient;
 
     public Appointment(int id, Timestamp appointmentDate, Patient patient) {
         this.id = id;

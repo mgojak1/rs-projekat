@@ -3,6 +3,7 @@ package ba.unsa.etf.rs.project;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,9 +16,11 @@ public class PatientDAOBase implements PatientDAO {
     private PreparedStatement getNextPatientIDStatement;
     private PreparedStatement addPatientStatement;
     private PreparedStatement getAppointmentsStatement;
-    private PreparedStatement getNextAppointmentIDStatement;
     private PreparedStatement addAppointmentStatement;
+    private PreparedStatement updateAppointmentStatement;
+    private PreparedStatement getNextAppointmentIDStatement;
     private PreparedStatement deleteAppointmentStatement;
+    private PreparedStatement deleteAppointmentsByPatientStatement;
     private static PatientDAOBase instance = null;
 
     public static PatientDAOBase getInstance() {
@@ -50,7 +53,9 @@ public class PatientDAOBase implements PatientDAO {
             getAppointmentsStatement = connection.prepareStatement("SELECT * FROM appointments");
             getNextAppointmentIDStatement = connection.prepareStatement("SELECT MAX(id)+1 FROM appointments");
             addAppointmentStatement = connection.prepareStatement("INSERT INTO appointments VALUES (?,?,?)");
+            updateAppointmentStatement = connection.prepareStatement("UPDATE appointments SET appointment_date=?, patient=? WHERE id=?");
             deleteAppointmentStatement = connection.prepareStatement("DELETE FROM appointments WHERE id = ?");
+            deleteAppointmentsByPatientStatement = connection.prepareStatement("DELETE FROM appointments WHERE patient =?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,6 +96,36 @@ public class PatientDAOBase implements PatientDAO {
             updatePatientStatement.setDouble(8, patient.getHeight());
             updatePatientStatement.setInt(9, patient.getId());
             updatePatientStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addAppointment(Appointment appointment) {
+        try {
+            LocalDateTime localDateTime = LocalDateTime.of(appointment.getAppointmentDate().getYear(),
+                    appointment.getAppointmentDate().getMonth(), appointment.getAppointmentDate().getDayOfMonth(),
+                    appointment.getAppointmentTime().getHours(), appointment.getAppointmentTime().getMinutes());
+            addAppointmentStatement.setInt(1, getNextAppointmentID());
+            addAppointmentStatement.setTimestamp(2,Timestamp.valueOf(localDateTime.plusHours(2)));
+            addAppointmentStatement.setInt(3, appointment.getPatient().getId());
+            addAppointmentStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAppointment(Appointment appointment) {
+        try {
+            LocalDateTime localDateTime = LocalDateTime.of(appointment.getAppointmentDate().getYear(),
+                    appointment.getAppointmentDate().getMonth(), appointment.getAppointmentDate().getDayOfMonth(),
+                    appointment.getAppointmentTime().getHours(), appointment.getAppointmentTime().getMinutes());
+            updateAppointmentStatement.setTimestamp(1,Timestamp.valueOf(localDateTime.plusHours(2)));
+            updateAppointmentStatement.setInt(2, appointment.getPatient().getId());
+            updateAppointmentStatement.setInt(3, appointment.getId());
+            updateAppointmentStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -180,6 +215,19 @@ public class PatientDAOBase implements PatientDAO {
         }
         return id;
     }
+    public int getNextAppointmentID(){
+        ResultSet rs = null;
+        int id = 1;
+        try {
+            rs = getNextAppointmentIDStatement.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
 
 
     private Patient getPatient(int id) {
@@ -221,6 +269,14 @@ public class PatientDAOBase implements PatientDAO {
         try {
             deleteAppointmentStatement.setInt(1, appointment.getId());
             deleteAppointmentStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteAppointmentByPatient(Patient patient) {
+        try {
+            deleteAppointmentsByPatientStatement.setInt(1, patient.getId());
+            deleteAppointmentsByPatientStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

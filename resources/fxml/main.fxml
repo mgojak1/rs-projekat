@@ -29,12 +29,12 @@
                      <top>
                         <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#addAppointmentAction">
+                              <Button accessibleText="Add new appointment" mnemonicParsing="false" onAction="#addAppointmentAction">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView accessibleHelp="Add new appointment" accessibleText="Add new appointment" fitHeight="25.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/plus.png" />
                                        </image>

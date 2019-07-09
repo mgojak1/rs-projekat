@@ -24,16 +24,16 @@ public class Appointment {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Time getAppointmentTime() {
         return appointmentTime;
     }
 
     public void setAppointmentTime(Time appointmentTime) {
         this.appointmentTime = appointmentTime;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDate getAppointmentDate() {

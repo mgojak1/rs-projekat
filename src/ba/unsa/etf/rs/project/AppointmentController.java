@@ -1,7 +1,5 @@
 package ba.unsa.etf.rs.project;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,13 +29,15 @@ public class AppointmentController {
 
     }
 
-    public Appointment getAppointment() {return appointment;}
+    public Appointment getAppointment() {
+        return appointment;
+    }
 
     private int findId() {
         int id = 0;
-        for (Patient p: patients
-             ) {
-            if(p.getId() == appointment.getPatient().getId()) id = patients.indexOf(p);
+        for (Patient p : patients
+        ) {
+            if (p.getId() == appointment.getPatient().getId()) id = patients.indexOf(p);
         }
 
         return id;
@@ -53,7 +53,7 @@ public class AppointmentController {
 
         choicePatients.setItems(patients);
 
-        if(appointment == null) {
+        if (appointment == null) {
             choicePatients.getSelectionModel().selectFirst();
             fieldAppointmentDate.setValue(LocalDate.now());
         } else {
@@ -62,7 +62,6 @@ public class AppointmentController {
             sliderHours.valueProperty().setValue(appointment.getAppointmentTime().getHours());
             fieldAppointmentDate.valueProperty().setValue(appointment.getAppointmentDate());
         }
-
 
 
         fieldHours.setText(String.valueOf(sliderHours.valueProperty().intValue()));
@@ -75,7 +74,7 @@ public class AppointmentController {
 
     public void okAction() {
 
-        if(appointment == null) {
+        if (appointment == null) {
             appointment = new Appointment();
         }
         appointment.setPatient(choicePatients.getValue());
@@ -91,8 +90,6 @@ public class AppointmentController {
         Stage stage = (Stage) fieldHours.getScene().getWindow();
         stage.close();
     }
-
-
 
 
 }

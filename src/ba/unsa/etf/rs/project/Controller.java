@@ -56,7 +56,7 @@ public class Controller {
         tableAppointments.getSelectionModel().selectFirst();
 
         listPatients.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(oldValue != null) {
+            if (oldValue != null) {
                 fieldPatientName.textProperty().unbindBidirectional(oldValue.nameProperty());
                 fieldPatientSurname.textProperty().unbindBidirectional(oldValue.surnameProperty());
                 fieldDateOfBirth.valueProperty().unbindBidirectional(oldValue.dateOfBirthProperty());
@@ -66,7 +66,7 @@ public class Controller {
                 fieldPhoneNumber.textProperty().unbindBidirectional(oldValue.phoneNumberProperty());
                 areaDiagnosis.textProperty().unbindBidirectional(oldValue.diagnosisProperty());
             }
-            if(newValue == null) {
+            if (newValue == null) {
                 fieldPatientName.setText("");
                 fieldPatientSurname.setText("");
                 fieldDateOfBirth.setValue(LocalDate.now());
@@ -75,7 +75,7 @@ public class Controller {
                 fieldLivingPlace.setText("");
                 fieldPhoneNumber.setText("");
                 areaDiagnosis.setText("");
-            }else {
+            } else {
                 fieldPatientName.textProperty().bindBidirectional(newValue.nameProperty());
                 fieldPatientSurname.textProperty().bindBidirectional(newValue.surnameProperty());
                 fieldDateOfBirth.valueProperty().bindBidirectional(newValue.dateOfBirthProperty());
@@ -117,7 +117,7 @@ public class Controller {
     }
 
     public void deletePatientAction(ActionEvent actionEvent) {
-        if(listPatients.getSelectionModel().isEmpty()) return;
+        if (listPatients.getSelectionModel().isEmpty()) return;
         //Delete all related appointments first
         dao.deleteAppointmentByPatient(listPatients.getSelectionModel().getSelectedItem());
         appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
@@ -134,10 +134,11 @@ public class Controller {
         listPatients.getSelectionModel().selectLast();
         dao.addPatient(listPatients.getSelectionModel().getSelectedItem());
     }
+
     public void addAppointmentAction() {
-        if(patientsList.isEmpty()) return;
+        if (patientsList.isEmpty()) return;
         Stage stage = new Stage();
-        Parent root = null;
+        Parent root;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/appointment.fxml"));
             AppointmentController appointmentController = new AppointmentController(null, dao.getPatients());
@@ -146,23 +147,23 @@ public class Controller {
             stage.setTitle("Appointment");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             stage.show();
-            stage.setOnHiding( event -> {
+            stage.setOnHiding(event -> {
                 Appointment appointment = appointmentController.getAppointment();
                 if (appointment != null) {
                     dao.addAppointment(appointment);
                     appointmentsList.setAll(dao.getAppointments());
                     tableAppointments.refresh();
                 }
-            } );
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void editAppointmentAction() {
-        if(tableAppointments.getSelectionModel().isEmpty()) return;
+        if (tableAppointments.getSelectionModel().isEmpty()) return;
         Stage stage = new Stage();
-        Parent root = null;
+        Parent root;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/appointment.fxml"));
             AppointmentController appointmentController = new AppointmentController(tableAppointments.getSelectionModel().getSelectedItem(), dao.getPatients());
@@ -176,21 +177,21 @@ public class Controller {
             stage.setScene(new Scene(root, 600, 250));
             stage.show();
 
-            stage.setOnHiding( event -> {
+            stage.setOnHiding(event -> {
                 Appointment appointment = appointmentController.getAppointment();
                 if (appointment != null) {
                     dao.updateAppointment(appointment);
                     appointmentsList.setAll(dao.getAppointments());
                     tableAppointments.refresh();
                 }
-            } );
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void deleteAppointmentAction() {
-        if(tableAppointments.getSelectionModel().isEmpty()) return;
+        if (tableAppointments.getSelectionModel().isEmpty()) return;
         dao.deleteAppointment(tableAppointments.getSelectionModel().getSelectedItem());
         appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
         tableAppointments.refresh();

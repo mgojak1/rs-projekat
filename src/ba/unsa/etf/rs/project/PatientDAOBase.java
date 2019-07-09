@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PatientDAOBase implements PatientDAO {
+    private static PatientDAOBase instance = null;
     private Connection connection;
     private PreparedStatement getPatientsStatement;
     private PreparedStatement getPatientStatement;
@@ -21,13 +22,6 @@ public class PatientDAOBase implements PatientDAO {
     private PreparedStatement getNextAppointmentIDStatement;
     private PreparedStatement deleteAppointmentStatement;
     private PreparedStatement deleteAppointmentsByPatientStatement;
-    private static PatientDAOBase instance = null;
-
-    public static PatientDAOBase getInstance() {
-        if (instance == null) instance = new PatientDAOBase();
-        return instance;
-    }
-
 
     private PatientDAOBase(){
         try {
@@ -61,11 +55,14 @@ public class PatientDAOBase implements PatientDAO {
         }
     }
 
+    public static PatientDAOBase getInstance() {
+        if (instance == null) instance = new PatientDAOBase();
+        return instance;
+    }
 
     private Patient getPatientFromResultSet(ResultSet rs) throws SQLException {
-        Patient patient = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
+        return new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
         ,rs.getString(6), rs.getDouble(8), rs.getDouble(9), rs.getDate(7).toLocalDate());
-        return patient;
     }
 
 
@@ -178,18 +175,18 @@ public class PatientDAOBase implements PatientDAO {
 
 
     private void regenerateDatabase() {
-        Scanner input = null;
+        Scanner input;
         try {
             input = new Scanner(new FileInputStream("database.db.sql"));
-            String sqlStatement = "";
+            StringBuilder sqlStatement = new StringBuilder();
             while (input.hasNext()) {
-                sqlStatement += input.nextLine();
+                sqlStatement.append(input.nextLine());
                 if ( sqlStatement.charAt( sqlStatement.length()-1 ) == ';') {
                     System.out.println("Executing statement: "+sqlStatement);
                     try {
                         Statement stmt = connection.createStatement();
-                        stmt.execute(sqlStatement);
-                        sqlStatement = "";
+                        stmt.execute(sqlStatement.toString());
+                        sqlStatement = new StringBuilder();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -203,7 +200,7 @@ public class PatientDAOBase implements PatientDAO {
 
 
     public int getNextPatientID(){
-        ResultSet rs = null;
+        ResultSet rs;
         int id = 1;
         try {
             rs = getNextPatientIDStatement.executeQuery();
@@ -216,7 +213,7 @@ public class PatientDAOBase implements PatientDAO {
         return id;
     }
     public int getNextAppointmentID(){
-        ResultSet rs = null;
+        ResultSet rs;
         int id = 1;
         try {
             rs = getNextAppointmentIDStatement.executeQuery();

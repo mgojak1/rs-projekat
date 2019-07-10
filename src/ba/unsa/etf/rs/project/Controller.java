@@ -16,6 +16,7 @@ import javafx.util.converter.NumberStringConverter;
 import java.io.IOException;
 import java.sql.Array;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -90,6 +91,7 @@ public class Controller {
         listPatients.getSelectionModel().selectFirst();
 
         fieldPatientSurname.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(patientsList.isEmpty()) return;
             listPatients.getSelectionModel().getSelectedItem().setSurname(newValue);
             dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
             appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
@@ -99,6 +101,7 @@ public class Controller {
             listPatients.refresh();
         });
         fieldPatientName.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(patientsList.isEmpty()) return;
             listPatients.getSelectionModel().getSelectedItem().setName(newValue);
             dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
             appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
@@ -108,24 +111,36 @@ public class Controller {
             listPatients.refresh();
         });
 
-        fieldDateOfBirth.valueProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        fieldMass.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        fieldHeight.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        fieldLivingPlace.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        fieldPhoneNumber.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
-        areaDiagnosis.textProperty().addListener((observableValue, s, t1) -> dao.updatePatient(listPatients.getSelectionModel().getSelectedItem()));
+        fieldDateOfBirth.valueProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldMass.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldHeight.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldLivingPlace.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldPhoneNumber.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        areaDiagnosis.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
     }
 
     public void deletePatientAction(ActionEvent actionEvent) {
         if (listPatients.getSelectionModel().isEmpty()) return;
-        //Delete all related appointments first
-        dao.deleteAppointmentByPatient(listPatients.getSelectionModel().getSelectedItem());
-        appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
-        tableAppointments.refresh();
-        //Delete patient
-        dao.deletePatient(listPatients.getSelectionModel().getSelectedItem());
-        patientsList.removeAll(listPatients.getSelectionModel().getSelectedItem());
-        listPatients.refresh();
+        Patient patient = listPatients.getSelectionModel().getSelectedItem();
+        if (patient == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm deletion");
+        alert.setHeaderText("Deleting patient " + patient.toString());
+        alert.setContentText("Are you sure you want to delete patient " +patient.toString()+" and all related appointments?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            //Delete all related appointments first
+            dao.deleteAppointmentByPatient(listPatients.getSelectionModel().getSelectedItem());
+            appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
+            tableAppointments.setItems(appointmentsList);
+            tableAppointments.refresh();
+            //Delete patient
+            dao.deletePatient(listPatients.getSelectionModel().getSelectedItem());
+            patientsList.removeAll(listPatients.getSelectionModel().getSelectedItem());
+            listPatients.refresh();
+        }
     }
 
     public void addPatientAction() {
@@ -145,7 +160,11 @@ public class Controller {
             loader.setController(appointmentController);
             root = loader.load();
             stage.setTitle("Appointment");
-            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setScene(new Scene(root, 600, 250));
+            stage.setMinWidth(600);
+            stage.setMaxWidth(600);
+            stage.setMinHeight(250);
+            stage.setMaxHeight(250);
             stage.show();
             stage.setOnHiding(event -> {
                 Appointment appointment = appointmentController.getAppointment();
@@ -192,9 +211,21 @@ public class Controller {
 
     public void deleteAppointmentAction() {
         if (tableAppointments.getSelectionModel().isEmpty()) return;
-        dao.deleteAppointment(tableAppointments.getSelectionModel().getSelectedItem());
-        appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
-        tableAppointments.refresh();
+        Appointment appointment = tableAppointments.getSelectionModel().getSelectedItem();
+        if (appointment == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm deletion");
+        alert.setHeaderText("Deleting appointment for " + appointment.getPatient().toString());
+        alert.setContentText("Are you sure you want to delete this appointment?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            dao.deleteAppointment(tableAppointments.getSelectionModel().getSelectedItem());
+            appointmentsList.removeAll(tableAppointments.getSelectionModel().getSelectedItem());
+            tableAppointments.refresh();
+        }
+
     }
 
 }

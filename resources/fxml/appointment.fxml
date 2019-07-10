@@ -34,16 +34,6 @@
            </BorderPane.margin>
            <Label text="Patient:"/>
            <ChoiceBox fx:id="choicePatients" prefWidth="200.0" GridPane.columnIndex="1"/>
-           <Slider fx:id="sliderHours" blockIncrement="1.0" majorTickUnit="1.0" max="23.0" minorTickCount="0"
-                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-           <Slider fx:id="sliderMinutes" majorTickUnit="5.0" max="59.0" minorTickCount="1" GridPane.columnIndex="1"
-                   GridPane.rowIndex="3"/>
-           <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
-               <buttons>
-                   <Button mnemonicParsing="false" onAction="#okAction" text="OK"/>
-                   <Button mnemonicParsing="false" onAction="#cancelAction" text="Cancel"/>
-               </buttons>
-           </ButtonBar>
            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647"
                  GridPane.rowIndex="1">
                <Label text="Date:">
@@ -77,6 +67,16 @@
                    </HBox.margin>
                </TextField>
            </HBox>
+           <Slider fx:id="sliderHours" blockIncrement="1.0" majorTickUnit="1.0" max="23.0" minorTickCount="0"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+           <Slider fx:id="sliderMinutes" majorTickUnit="5.0" max="59.0" minorTickCount="1" GridPane.columnIndex="1"
+                   GridPane.rowIndex="3"/>
+           <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+               <buttons>
+                   <Button mnemonicParsing="false" onAction="#okAction" text="OK"/>
+                   <Button mnemonicParsing="false" onAction="#cancelAction" text="Cancel"/>
+               </buttons>
+           </ButtonBar>
            <Label text="HH:" GridPane.rowIndex="2"/>
            <Label text="MM:" GridPane.rowIndex="3"/>
        </GridPane>

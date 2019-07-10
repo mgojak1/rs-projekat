@@ -248,7 +248,7 @@ public class PatientDAOBase implements PatientDAO {
             ResultSet rs = getAppointmentsStatement.executeQuery();
             while (rs.next()) {
                 Patient patient = getPatient(rs.getInt(3));
-                Appointment appointment = getAppointmentFromResulstSet(rs, patient);
+                Appointment appointment = getAppointmentFromResultSet(rs, patient);
                 result.add(appointment);
             }
         } catch (SQLException e) {
@@ -258,7 +258,7 @@ public class PatientDAOBase implements PatientDAO {
     }
 
 
-    public Appointment getAppointmentFromResulstSet(ResultSet rs, Patient patient) throws SQLException {
+    public Appointment getAppointmentFromResultSet(ResultSet rs, Patient patient) throws SQLException {
         return new Appointment(rs.getInt(1), rs.getTimestamp(2), patient);
     }
 

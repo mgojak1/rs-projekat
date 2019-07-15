@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS `patients` (
                                          mass          DOUBLE,
                                          height        DOUBLE
 );
-INSERT INTO `patients` VALUES (1,'John','Smith','061/123-123', 'California', 'Diagnosis 1', -1457744400000, 77.2,187.6);
-INSERT INTO `patients` VALUES (2,'Rose','Evans','061/111-111', 'New York', 'Diagnosis 2', -3861565200000, 53.9,172.5);
-INSERT INTO `patients` VALUES (3,'Ronald','Matthews','061/222-123', 'New York', 'Diagnosis 3', -3861738000000, 70.1,173.6);
+INSERT INTO `patients` VALUES (1,'John','Smith','061/123-123', 'California', 'Diagnosis 1', 25401600000, 77.2,187.6);
+INSERT INTO `patients` VALUES (2,'Rose','Evans','061/111-111', 'New York', 'Diagnosis 2', 114566400000, 53.9,172.5);
+INSERT INTO `patients` VALUES (3,'Ronald','Matthews','061/222-123', 'New York', 'Diagnosis 3', 587779200000, 70.1,173.6);
 CREATE TABLE IF NOT EXISTS `appointments` (
                                           id            INTEGER
                                               constraint patients_pk

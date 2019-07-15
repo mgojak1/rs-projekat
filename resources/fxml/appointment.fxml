@@ -69,8 +69,8 @@
            <Slider fx:id="sliderMinutes" majorTickUnit="5.0" max="59.0" minorTickCount="1" showTickLabels="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                <buttons>
-                   <Button mnemonicParsing="false" onAction="#okAction" text="OK" />
-                   <Button mnemonicParsing="false" onAction="#cancelAction" text="Cancel" />
+                   <Button fx:id="btnOK" mnemonicParsing="false" onAction="#okAction" text="OK" />
+                   <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#cancelAction" text="Cancel" />
                </buttons>
            </ButtonBar>
            <Label text="HH:" GridPane.rowIndex="2" />

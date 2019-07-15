@@ -60,6 +60,12 @@ public class PatientDAOBase implements PatientDAO {
         return instance;
     }
 
+    public static void removeInstance() {
+        if (instance == null) return;
+        instance.close();
+        instance = null;
+    }
+
     private Patient getPatientFromResultSet(ResultSet rs) throws SQLException {
         return new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
                 , rs.getString(6), rs.getDouble(8), rs.getDouble(9), rs.getDate(7).toLocalDate());
@@ -134,6 +140,7 @@ public class PatientDAOBase implements PatientDAO {
         try {
             deletePatientStatement.setInt(1, patient.getId());
             deletePatientStatement.executeUpdate();
+            deleteAppointmentByPatient(patient);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -174,7 +181,7 @@ public class PatientDAOBase implements PatientDAO {
     }
 
 
-    private void regenerateDatabase() {
+    public void regenerateDatabase() {
         Scanner input;
         try {
             input = new Scanner(new FileInputStream("database.db.sql"));
@@ -182,7 +189,7 @@ public class PatientDAOBase implements PatientDAO {
             while (input.hasNext()) {
                 sqlStatement.append(input.nextLine());
                 if (sqlStatement.charAt(sqlStatement.length() - 1) == ';') {
-                    System.out.println("Executing statement: " + sqlStatement);
+//                    System.out.println("Executing statement: " + sqlStatement);
                     try {
                         Statement stmt = connection.createStatement();
                         stmt.execute(sqlStatement.toString());

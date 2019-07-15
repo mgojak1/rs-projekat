@@ -45,6 +45,15 @@ public class Controller {
         patientsList = FXCollections.observableArrayList(dao.getPatients());
         appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
     }
+    //Test
+    public void resetDao() {
+        PatientDAOBase.removeInstance();
+        File dbfile = new File("database.db");
+        dbfile.delete();
+        dao = PatientDAOBase.getInstance();
+    }
+
+
 
     @FXML
     public void initialize() {

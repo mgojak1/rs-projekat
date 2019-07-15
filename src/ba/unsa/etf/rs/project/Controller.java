@@ -14,11 +14,8 @@ import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.time.LocalDate;
 import java.util.Optional;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class Controller {
     public TableView<Appointment> tableAppointments;
@@ -91,7 +88,7 @@ public class Controller {
         listPatients.getSelectionModel().selectFirst();
 
         fieldPatientSurname.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(patientsList.isEmpty()) return;
+            validateFields();
             listPatients.getSelectionModel().getSelectedItem().setSurname(newValue);
             dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
             appointmentsList = FXCollections.observableArrayList(dao.getAppointments());
@@ -101,6 +98,7 @@ public class Controller {
             listPatients.refresh();
         });
         fieldPatientName.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            validateFields();
             if(patientsList.isEmpty()) return;
             listPatients.getSelectionModel().getSelectedItem().setName(newValue);
             dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());
@@ -111,12 +109,12 @@ public class Controller {
             listPatients.refresh();
         });
 
-        fieldDateOfBirth.valueProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
-        fieldMass.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
-        fieldHeight.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
-        fieldLivingPlace.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
-        fieldPhoneNumber.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
-        areaDiagnosis.textProperty().addListener((observableValue, s, t1) -> {if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldDateOfBirth.valueProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldMass.textProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldHeight.textProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldLivingPlace.textProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        fieldPhoneNumber.textProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
+        areaDiagnosis.textProperty().addListener((observableValue, s, t1) -> {validateFields();if(patientsList.isEmpty()) return; dao.updatePatient(listPatients.getSelectionModel().getSelectedItem());});
     }
 
     public void deletePatientAction(ActionEvent actionEvent) {
@@ -226,6 +224,39 @@ public class Controller {
             tableAppointments.refresh();
         }
 
+    }
+
+    public void validateFields(){
+        if(fieldPatientName.getText().trim().isEmpty()) {
+            fieldPatientName.getStyleClass().add("invalid");
+        } else {
+            fieldPatientName.getStyleClass().removeAll("invalid");
+        }
+        if(fieldPatientSurname.getText().trim().isEmpty()) {
+            fieldPatientSurname.getStyleClass().add("invalid");
+        } else {
+            fieldPatientSurname.getStyleClass().removeAll("invalid");
+        }
+        if(fieldLivingPlace.getText().trim().isEmpty()) {
+            fieldLivingPlace.getStyleClass().add("invalid");
+        } else {
+            fieldLivingPlace.getStyleClass().removeAll("invalid");
+        }
+        if(fieldPhoneNumber.getText().trim().isEmpty()) {
+            fieldPhoneNumber.getStyleClass().add("invalid");
+        } else {
+            fieldPhoneNumber.getStyleClass().removeAll("invalid");
+        }
+        if(fieldHeight.getText().trim().isEmpty()) {
+            fieldHeight.getStyleClass().add("invalid");
+        } else {
+            fieldHeight.getStyleClass().removeAll("invalid");
+        }
+        if(fieldMass.getText().trim().isEmpty()) {
+            fieldMass.getStyleClass().add("invalid");
+        } else {
+            fieldMass.getStyleClass().removeAll("invalid");
+        }
     }
 
 }

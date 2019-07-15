@@ -16,69 +16,65 @@
 
 <BorderPane prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                 minWidth="-Infinity">
+       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
            </columnConstraints>
            <rowConstraints>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <BorderPane.margin>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
            </BorderPane.margin>
-           <Label text="Patient:"/>
-           <ChoiceBox fx:id="choicePatients" prefWidth="200.0" GridPane.columnIndex="1"/>
-           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647"
-                 GridPane.rowIndex="1">
+           <Label text="Patient:" />
+           <ChoiceBox fx:id="choicePatients" prefWidth="200.0" GridPane.columnIndex="1" />
+           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                <Label text="Date:">
                    <HBox.margin>
-                       <Insets right="63.0"/>
+                       <Insets right="63.0" />
                    </HBox.margin>
                </Label>
                <DatePicker fx:id="fieldAppointmentDate" prefWidth="200.0">
                    <HBox.margin>
-                       <Insets right="15.0"/>
+                       <Insets right="15.0" />
                    </HBox.margin>
                </DatePicker>
                <Label text="HH:">
                    <HBox.margin>
-                       <Insets right="15.0"/>
+                       <Insets right="15.0" />
                    </HBox.margin>
                </Label>
                <TextField fx:id="fieldHours" editable="false" prefWidth="50.0">
                    <HBox.margin>
-                       <Insets right="15.0"/>
+                       <Insets right="15.0" />
                    </HBox.margin>
                </TextField>
                <Label text="MM:">
                    <HBox.margin>
-                       <Insets right="15.0"/>
+                       <Insets right="15.0" />
                    </HBox.margin>
                </Label>
                <TextField fx:id="fieldMinutes" editable="false" prefWidth="50.0">
                    <HBox.margin>
-                       <Insets right="10.0"/>
+                       <Insets right="10.0" />
                    </HBox.margin>
                </TextField>
            </HBox>
-           <Slider fx:id="sliderHours" blockIncrement="1.0" majorTickUnit="1.0" max="23.0" minorTickCount="0"
-                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-           <Slider fx:id="sliderMinutes" majorTickUnit="5.0" max="59.0" minorTickCount="1" GridPane.columnIndex="1"
-                   GridPane.rowIndex="3"/>
+           <Slider fx:id="sliderHours" blockIncrement="1.0" majorTickUnit="1.0" max="23.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+           <Slider fx:id="sliderMinutes" majorTickUnit="5.0" max="59.0" minorTickCount="1" showTickLabels="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                <buttons>
-                   <Button mnemonicParsing="false" onAction="#okAction" text="OK"/>
-                   <Button mnemonicParsing="false" onAction="#cancelAction" text="Cancel"/>
+                   <Button mnemonicParsing="false" onAction="#okAction" text="OK" />
+                   <Button mnemonicParsing="false" onAction="#cancelAction" text="Cancel" />
                </buttons>
            </ButtonBar>
-           <Label text="HH:" GridPane.rowIndex="2"/>
-           <Label text="MM:" GridPane.rowIndex="3"/>
+           <Label text="HH:" GridPane.rowIndex="2" />
+           <Label text="MM:" GridPane.rowIndex="3" />
        </GridPane>
    </center>
 </BorderPane>

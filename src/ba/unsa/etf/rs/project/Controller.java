@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
@@ -264,15 +266,26 @@ public class Controller {
 
 
     public void generateReportAction() {
+        if(dao.getAppointments().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Report not generated");
+            alert.setHeaderText("No appointments in table");
+            alert.showAndWait();
+            return;
+        }
         PrintWriter output = null;
-        File file = new File(System.getProperty("user.home") + "/Desktop/appointments.txt");
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("JavaFX Projects");
+        File defaultDirectory = new File(System.getProperty("user.home"));
+        chooser.setInitialDirectory(defaultDirectory);
+        File file = chooser.showSaveDialog(new Stage());
         try {
             FileWriter writer = new FileWriter(file, false);
             output = new PrintWriter(writer);
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Report not generated");
-            alert.setHeaderText("Report could not be generated at " + System.getProperty("user.home") + "/Desktop/appointments.txt");
+            alert.setHeaderText("Report could not be generated at " + file.getAbsolutePath());
             alert.showAndWait();
             e.printStackTrace();
         }
@@ -286,7 +299,7 @@ public class Controller {
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Report generated");
-            alert.setHeaderText("Report generated at " + System.getProperty("user.home") + "/Desktop/appointments.txt");
+            alert.setHeaderText("Report generated at " + file.getAbsolutePath());
             alert.showAndWait();
             output.close();
         }

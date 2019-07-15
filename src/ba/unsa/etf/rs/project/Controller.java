@@ -13,7 +13,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -259,4 +262,33 @@ public class Controller {
         }
     }
 
+
+    public void generateReportAction() {
+        PrintWriter output = null;
+        File file = new File(System.getProperty("user.home") + "/Desktop/appointments.txt");
+        try {
+            FileWriter writer = new FileWriter(file, false);
+            output = new PrintWriter(writer);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Report not generated");
+            alert.setHeaderText("Report could not be generated at " + System.getProperty("user.home") + "/Desktop/appointments.txt");
+            alert.showAndWait();
+            e.printStackTrace();
+        }
+        if(output != null) {
+            output.println(String.format("%3s", "#") + " " + String.format("%-20s" , "Patient") + " " +
+                    String.format("%-8s", "Date") + " " + String.format("%-5s", "Time"));
+            output.println("---------------------------------------");
+            for (Appointment appointment : dao.getAppointments()) {
+                output.println(String.format("%3d",appointment.getId()) + " " + String.format("%-20s" , appointment.getPatient().toString()) + " " +
+                        String.format("%tD", appointment.getAppointmentDate()) + " " + String.format("%tR", appointment.getAppointmentTime()));
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Report generated");
+            alert.setHeaderText("Report generated at " + System.getProperty("user.home") + "/Desktop/appointments.txt");
+            alert.showAndWait();
+            output.close();
+        }
+    }
 }

@@ -1,10 +1,14 @@
 package ba.unsa.etf.rs.project;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
-public class Appointment {
+public class Appointment{
     private int id;
     private LocalDate appointmentDate;
     private Time appointmentTime;
@@ -51,4 +55,5 @@ public class Appointment {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
 }
